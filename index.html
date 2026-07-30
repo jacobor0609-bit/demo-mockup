@@ -259,6 +259,28 @@
     font-size: 14.5px; color: var(--ink); font-style: italic;
   }
   .quote-block .attribution { display: block; margin-top: 10px; font-style: normal; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--slate-light); text-transform: uppercase; }
+
+  /* ---------- PUBLICATIONS PAGE ---------- */
+  .pub-year-block { margin-bottom: 44px; }
+  .pub-year {
+    font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600;
+    padding-bottom: 12px; margin-bottom: 18px; border-bottom: 1px solid var(--line);
+  }
+  .pub-card {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 20px 0; border-bottom: 1px solid var(--line);
+  }
+  .pub-card:last-child { border-bottom: none; }
+  .pub-icon {
+    flex-shrink: 0; width: 32px; height: 32px; border-radius: 7px;
+    background: var(--teal-dim); color: var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 13px;
+  }
+  .pub-body { flex: 1; }
+  .pub-body h3 { font-size: 14.5px; font-weight: 500; line-height: 1.5; margin-bottom: 8px; }
+  .pub-desc { font-size: 13px; color: var(--slate); margin-bottom: 8px; }
+  .pub-link { font-size: 13px; font-weight: 500; color: var(--teal); white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -267,9 +289,11 @@
     <span class="label">Mockup — not the live site</span>
     <span style="color:#5B6472">3 pages · click to preview</span>
     <div class="proto-tabs">
-      <button class="active" onclick="showPage('home', this)">Home</button>
-      <button onclick="showPage('members', this)">Members</button>
-      <button onclick="showPage('join', this)">Join the Lab</button>
+      <button class="active" data-page="home" onclick="showPage('home', this)">Home</button>
+      <button data-page="members" onclick="showPage('members', this)">Members</button>
+      <button data-page="publications" onclick="showPage('publications', this)">Publications</button>
+      <button data-page="join" onclick="showPage('join', this)">Join the Lab</button>
+      <button data-page="donate" onclick="showPage('donate', this)">Donate</button>
     </div>
   </div>
 
@@ -285,12 +309,12 @@
       </div>
       <div class="navlinks">
         <a class="current" href="#">Home</a>
-        <a href="#">Members</a>
-        <a href="#">Publications</a>
-        <a href="#">Join the Lab</a>
-        <a href="#">Donate</a>
+        <a href="#" onclick="jump('members'); return false;">Members</a>
+        <a href="#" onclick="jump('publications'); return false;">Publications</a>
+        <a href="#" onclick="jump('join'); return false;">Join the Lab</a>
+        <a href="#" onclick="jump('donate'); return false;">Donate</a>
       </div>
-      <a class="nav-cta" href="#">Join the Lab</a>
+      <a class="nav-cta" href="#" onclick="jump('join'); return false;">Join the Lab</a>
     </nav>
 
     <div class="hero">
@@ -399,13 +423,13 @@
         </div>
       </div>
       <div class="navlinks">
-        <a href="#">Home</a>
+        <a href="#" onclick="jump('home'); return false;">Home</a>
         <a class="current" href="#">Members</a>
-        <a href="#">Publications</a>
-        <a href="#">Join the Lab</a>
-        <a href="#">Donate</a>
+        <a href="#" onclick="jump('publications'); return false;">Publications</a>
+        <a href="#" onclick="jump('join'); return false;">Join the Lab</a>
+        <a href="#" onclick="jump('donate'); return false;">Donate</a>
       </div>
-      <a class="nav-cta" href="#">Join the Lab</a>
+      <a class="nav-cta" href="#" onclick="jump('join'); return false;">Join the Lab</a>
     </nav>
 
     <div class="members-hero">
@@ -501,13 +525,13 @@
         </div>
       </div>
       <div class="navlinks">
-        <a href="#">Home</a>
-        <a href="#">Members</a>
-        <a href="#">Publications</a>
+        <a href="#" onclick="jump('home'); return false;">Home</a>
+        <a href="#" onclick="jump('members'); return false;">Members</a>
+        <a href="#" onclick="jump('publications'); return false;">Publications</a>
         <a class="current" href="#">Join the Lab</a>
-        <a href="#">Donate</a>
+        <a href="#" onclick="jump('donate'); return false;">Donate</a>
       </div>
-      <a class="nav-cta" href="#">Join the Lab</a>
+      <a class="nav-cta" href="#" onclick="jump('join'); return false;">Join the Lab</a>
     </nav>
 
     <div class="join-hero">
@@ -571,6 +595,176 @@
     </footer>
   </div>
 
+  <!-- =================== PUBLICATIONS =================== -->
+  <div class="page" id="page-publications">
+    <nav class="sitenav">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <div>
+          <div class="brand-name">MAX Lab</div>
+          <div class="brand-sub">Medical AI eXcellence Lab</div>
+        </div>
+      </div>
+      <div class="navlinks">
+        <a href="#" onclick="jump('home'); return false;">Home</a>
+        <a href="#" onclick="jump('members'); return false;">Members</a>
+        <a class="current" href="#">Publications</a>
+        <a href="#" onclick="jump('join'); return false;">Join the Lab</a>
+        <a href="#" onclick="jump('donate'); return false;">Donate</a>
+      </div>
+      <a class="nav-cta" href="#" onclick="jump('join'); return false;">Join the Lab</a>
+    </nav>
+
+    <div class="members-hero">
+      <div class="kicker">Our work</div>
+      <h1>Publications</h1>
+      <p>The lab's scientific output, organized by year and browsable by research theme.</p>
+
+      <div class="segtabs" id="pub-filters">
+        <button class="active" onclick="filterPubs('all', this)">All</button>
+        <button onclick="filterPubs('papers', this)">Published papers</button>
+        <button onclick="filterPubs('abstracts', this)">Conference abstracts</button>
+        <button onclick="filterPubs('preprints', this)">Preprints</button>
+        <button onclick="filterPubs('ongoing', this)">Ongoing projects</button>
+      </div>
+    </div>
+
+    <section style="padding-top:12px;">
+      <div class="section-inner">
+
+        <div class="pub-year-block">
+          <div class="pub-year">2026</div>
+
+          <div class="pub-card" data-type="papers">
+            <div class="pub-icon">P</div>
+            <div class="pub-body">
+              <h3>[Author list]. [Title of published paper]. <em>[Journal name]</em>, [Vol/Issue], [Year].</h3>
+              <div class="tag-row">
+                <span class="tag">Published paper</span>
+                <span class="tag">Diagnostic AI</span>
+              </div>
+            </div>
+            <a class="pub-link" href="#">View →</a>
+          </div>
+
+          <div class="pub-card" data-type="ongoing">
+            <div class="pub-icon">O</div>
+            <div class="pub-body">
+              <h3>[Working title] — ongoing project</h3>
+              <p class="pub-desc">Brief one-line description of what the project is investigating.</p>
+              <div class="tag-row">
+                <span class="tag">Ongoing</span>
+                <span class="tag">Model interpretability</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pub-year-block">
+          <div class="pub-year">2025</div>
+
+          <div class="pub-card" data-type="abstracts">
+            <div class="pub-icon">A</div>
+            <div class="pub-body">
+              <h3>[Author list]. [Abstract title]. Presented at [Conference name], [Year].</h3>
+              <div class="tag-row">
+                <span class="tag">Conference abstract</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pub-card" data-type="preprints">
+            <div class="pub-icon">R</div>
+            <div class="pub-body">
+              <h3>[Author list]. [Preprint title]. <em>[Preprint server]</em>, [Year]. [DOI]</h3>
+              <div class="tag-row">
+                <span class="tag">Preprint</span>
+                <span class="tag">Precision medicine</span>
+              </div>
+            </div>
+            <a class="pub-link" href="#">View →</a>
+          </div>
+        </div>
+
+        <p style="margin-top:8px; font-size:13px; color:var(--slate-light);">Template structure shown above — real entries replace the bracketed placeholders as they're published.</p>
+
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-inner">
+        <span>© 2026 MAX Lab · Johns Hopkins Medicine</span>
+        <span class="mono" style="font-size:11px;">Medical AI eXcellence Lab</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- =================== DONATE =================== -->
+  <div class="page" id="page-donate">
+    <nav class="sitenav">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <div>
+          <div class="brand-name">MAX Lab</div>
+          <div class="brand-sub">Medical AI eXcellence Lab</div>
+        </div>
+      </div>
+      <div class="navlinks">
+        <a href="#" onclick="jump('home'); return false;">Home</a>
+        <a href="#" onclick="jump('members'); return false;">Members</a>
+        <a href="#" onclick="jump('publications'); return false;">Publications</a>
+        <a href="#" onclick="jump('join'); return false;">Join the Lab</a>
+        <a class="current" href="#">Donate</a>
+      </div>
+      <a class="nav-cta" href="#" onclick="jump('join'); return false;">Join the Lab</a>
+    </nav>
+
+    <div class="join-hero">
+      <div class="kicker">Support our work</div>
+      <h1>Research that makes AI in medicine worth trusting takes time — and support.</h1>
+      <p>Understanding how AI reasons, and making that reasoning trustworthy enough for clinical use, is slow and careful work. Your support helps sustain it.</p>
+    </div>
+
+    <section>
+      <div class="section-inner join-grid">
+        <div>
+          <div class="join-block">
+            <h2>Why your support matters</h2>
+            <p>This kind of research doesn't attract flashy funding — but it's the kind that determines whether AI in medicine becomes something clinicians can actually rely on. Donations to MAX Lab directly fund:</p>
+            <ul style="padding-left:18px; margin-top:12px;">
+              <li style="margin-bottom:6px;">Research into how AI models reason and where they fail</li>
+              <li style="margin-bottom:6px;">Development and validation of diagnostic tools built on that understanding</li>
+              <li style="margin-bottom:6px;">Training the next generation of researchers working at the intersection of medicine and AI</li>
+            </ul>
+          </div>
+
+          <div class="join-block">
+            <h2>Recognition</h2>
+            <p>With gratitude, we acknowledge donor support in future publications where appropriate and consistent with academic and ethical standards — unless a donor prefers to remain anonymous, which we always respect.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="sidebar-box">
+            <h3>Make a gift</h3>
+            <p>Every contribution, at any level, helps sustain the lab's research.</p>
+            <div class="why-tag" style="border-color:#D8D0F5; color:var(--ink); margin-bottom:10px;"><span>One-time gift</span><span class="status" style="color:var(--violet);">→</span></div>
+            <div class="why-tag" style="border-color:#D8D0F5; color:var(--ink); margin-bottom:20px;"><span>Recurring support</span><span class="status" style="color:var(--violet);">→</span></div>
+            <a class="btn-primary" style="display:block; text-align:center;" href="#">Donate now</a>
+            <p style="margin-top:14px; font-size:12px; color:var(--slate-light);">Donation platform link to be added — Johns Hopkins giving portal or similar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-inner">
+        <span>© 2026 MAX Lab · Johns Hopkins Medicine</span>
+        <span class="mono" style="font-size:11px;">Medical AI eXcellence Lab</span>
+      </div>
+    </footer>
+  </div>
+
 <script>
   function showPage(id, btn) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -578,6 +772,17 @@
     document.querySelectorAll('.proto-tabs button').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+  function jump(id) {
+    var btn = document.querySelector('.proto-tabs button[data-page="' + id + '"]');
+    showPage(id, btn);
+  }
+  function filterPubs(type, btn) {
+    document.querySelectorAll('#pub-filters button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.pub-card').forEach(card => {
+      card.style.display = (type === 'all' || card.dataset.type === type) ? 'flex' : 'none';
+    });
   }
   function showSeg(which) {
     document.getElementById('seg-panel-current').style.display = which === 'current' ? 'block' : 'none';
